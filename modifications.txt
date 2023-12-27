@@ -1,0 +1,79 @@
+CREATE BIOS/msgs.inc with the following...
+
+SYSMSG DB 13,10,"Non-System disk or disk error",13,10
+       DB "Replace and strike any key when ready",13,10,0 
+
+
+CHANGE BIOS/msbio2.asm in the following way...
+
+comment line including msbio.cl2
+immediately following that line add the following
+SNGMSG DB 13,10,"Insert diskette for drive "
+DRVLET DB "A: and strike",13,10,"any key when ready",13,10,10,10
+
+
+CHANGE BIOS/sysinit1.asm in the following way...
+
+comment line include msbio.cl4
+comment line include msbio.cl5
+immediately following that line add the following
+FATAL_MSG DB 0dh,0ah,7,0dh,0ah
+          DB "Internal stack overflow",0dh,0ah
+          DB "System halted",0dh,0ah,"$"
+comment line include msbio.cl6
+immediately following that line add the following
+DOSLOMSG DB "HMA not available: Loading DOS low", 13, 10, "$"
+FEMSG    DB "Fatal Error:Cannot allocate Memory for DOS",13,10,"$"
+
+CHANGE BIOS/sysimes.asm
+comment line include msbio.cl3
+immediately following that line add the following
+baddblspace     db "Wrong DBLSPACE.BIN version$"
+BADOPM  DB      13,10,"Unrecognized command in CONFIG.SYS"
+CRLFM   DB      13,10,'$'
+BadParm db      13,10,"Bad command or parameters - $"
+BADSIZ_PRE  DB      13,10,"Sector size too large in file $"
+BADLD_PRE   DB      13,10,"Bad or missing $"
+BADCOM  DB      "Command Interpreter",0
+BADCOUNTRY DB   13,10,"Invalid country code or code page",13,10,"$"
+BADCOUNTRYCOM DB 13,10,"Error in COUNTRY command",13,10,"$"
+INSUFMEMORY DB 13,10, "Insufficient memory for COUNTRY.SYS file",13,10,"$"
+BADMEM  DB      13,10,"Configuration too large for memory",13,10,"$"
+BADBLOCK DB     13,10,"Too many Block Devices",13,10,"$"
+BADSTACK DB     13,10,"Invalid STACK parameters",13,10,"$"
+BADORDER DB     13,10,"Incorrect order in CONFIG.SYS line ","$"
+ERRORCMD DB     "Error in CONFIG.SYS line ","$"
+OnOff       DB  "ONOFF"
+StartMsg    DB  "Starting MS-DOS...",13,10,10,0
+$PauseMsg   DB  "Press any key to continue . . .",13,10,"$"
+$CleanMsg   DB  "MS-DOS is bypassing your CONFIG.SYS and AUTOEXEC.BAT files.",13,10,"$"
+$InterMsg   DB  "MS-DOS will prompt you to confirm each CONFIG.SYS command.",13,10,"$"
+$MenuHeader DB  13,10,"  MS-DOS 6 Startup Menu",13,10,"  ���������������������",13,10,"$"
+$MenuPrmpt  DB  "  Enter a choice: $"
+$Statusline DB  "  F5=Bypass startup files    F8=Confirm each CONFIG.SYS line [   ]$"
+$InterPrmpt DB  " [Y,N]?$"
+$YES        DB  "YES$"
+$NO         DB  "NO $"
+$TimeOut    DB  "Time remaining: $"
+BadComPrmpt DB  "Enter correct name of Command Interpreter (eg, C:\COMMAND.COM)",13,10,"$"
+$AutoPrmpt  DB  "Process AUTOEXEC.BAT [Y,N]?$"
+toomanydrivesmsg db "WARNING! Drives past Z: exist and will be ignored" ; M029
+
+CHANGE INC/lmstub.asm
+comment line include msdos.cl2
+immediately following that line add the following
+XMMERRMSG DB 0
+
+CHANGE DOS/DIVMES.INC
+comment line include msdos.cl1
+immediately following that line add the following
+NLS_YES DB "yes"
+NLS_NO DB "no"
+NLS_yes2 DB "yes"
+NLS_no2 DB "no"
+DIVMES DB 13,10,"Divide overflow",13,10
+NoVxDErrMsg DB "VXDERR"
+comment line include msdos.cl4
+
+CHANGE INC/yesno.asm
+comment line msdos.cl3
